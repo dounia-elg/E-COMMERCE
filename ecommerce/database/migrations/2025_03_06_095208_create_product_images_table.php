@@ -9,10 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('product_images', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->string('image_path');
+            $table->boolean('is_primary')->default(false);
+            $table->integer('display_order')->default(0);
             $table->timestamps();
         });
     }

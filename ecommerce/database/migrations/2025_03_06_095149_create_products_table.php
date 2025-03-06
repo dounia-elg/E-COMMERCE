@@ -9,10 +9,18 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+        public function up()
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->text('description');
+            $table->decimal('price', 10, 2);
+            $table->integer('quantity')->default(0);
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->boolean('is_active')->default(true);
+            $table->decimal('discount_percent', 5, 2)->nullable();
             $table->timestamps();
         });
     }

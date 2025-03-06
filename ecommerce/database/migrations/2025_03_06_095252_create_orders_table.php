@@ -9,10 +9,27 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+        public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('order_number')->unique();
+            $table->enum('status', ['pending', 'processing', 'completed', 'declined'])->default('pending');
+            $table->decimal('total_amount', 10, 2);
+            $table->decimal('shipping_cost', 10, 2)->default(0);
+            $table->decimal('tax_amount', 10, 2)->default(0);
+            $table->string('shipping_address');
+            $table->string('shipping_city');
+            $table->string('shipping_state');
+            $table->string('shipping_country');
+            $table->string('shipping_postal_code');
+            $table->string('shipping_phone');
+            $table->text('notes')->nullable();
+            $table->string('payment_method');
+            $table->string('payment_id')->nullable();
+            $table->boolean('is_paid')->default(false);
+            $table->timestamp('paid_at')->nullable();
             $table->timestamps();
         });
     }
